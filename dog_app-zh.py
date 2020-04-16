@@ -214,7 +214,7 @@ print("Dog detected: ",np.mean([face_detector(dog_file) for dog_file in dog_file
 # 
 # 在这一小节，我们使用预训练的 [ResNet-50](http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006) 模型来检测图片中的狗狗。我们的第一行代码下载了 ResNet-50 模型，以及在 [ImageNet](http://www.image-net.org/) 预训练后的权重信息。ImageNet 是一个庞大且常用的数据集，用于图像分类和其他视觉任务。ImageNet 包含 1000 万以上的 URL，每个都链接到包含某个对象的图像，这些对象分成了 [1000 个类别](https://gist.github.com/yrevar/942d3a0ac09ec9e5eb3a)。输入一个图片，预训练的 ResNet-50 模型预测图片中包含了什么物体，并返回对应的标签（标签是 ImageNet 内置的一些类别）。
 
-# In[8]:
+# In[25]:
 
 
 from keras.applications.resnet50 import ResNet50
@@ -247,7 +247,7 @@ ResNet50_model = ResNet50(weights='imagenet')
 # 
 # 其中，`nb_samples` 是输入的图片路径中对应的样本数，或者说图片的数目。建议你把 `nb_samples` 认为是 3 维张量的数量（每个 3 维张量就对应数据集里的一张图片） 。
 
-# In[9]:
+# In[26]:
 
 
 from keras.preprocessing import image                  
@@ -274,7 +274,7 @@ def paths_to_tensor(img_paths):
 # 
 # 通过对预测概率向量取 argmax，我们得到一个整数，该整数表示该图片所属的类别的序号，我们可以使用这个[字典](https://gist.github.com/yrevar/942d3a0ac09ec9e5eb3a)找到类别名称。
 
-# In[10]:
+# In[27]:
 
 
 from keras.applications.resnet50 import preprocess_input, decode_predictions
@@ -291,7 +291,7 @@ def ResNet50_predict_labels(img_path):
 # 
 # 我们顺着该思路完成下面的 `dog_detector` 函数，如果检测到图片中有狗狗，它会返回 `True` （如果没有，返回 `False` ）。
 
-# In[11]:
+# In[23]:
 
 
 ### returns "True" if a dog is detected in the image stored at img_path
@@ -380,7 +380,7 @@ test_tensors = paths_to_tensor(test_files).astype('float32')/255
 # 
 # __答案：__按上图提示搭建卷积网络，该网络能取得很好表现的原因： 一方面，卷积层对特征选取并局部感知，这样可以在更高层次对局部做综合操作，最终获取全局信息；此外，池化层对特征降维，减小过拟合，通过MaxPooling保留最强的特征，再通过平均池化，形成一个特征点；最后使用Dense对特征向量进行softmax计算
 
-# In[14]:
+# In[7]:
 
 
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
@@ -582,7 +582,7 @@ print('Test accuracy: %.4f%%' % test_accuracy)
 
 # ### 使用模型预测狗狗的品种
 
-# In[33]:
+# In[29]:
 
 
 from extract_bottleneck_features import *
@@ -624,7 +624,7 @@ def VGG16_predict_breed(img_path):
 #     test_{network} = bottleneck_features['test']
 #     
 
-# In[52]:
+# In[11]:
 
 
 ### TODO: Obtain bottleneck features from another pre-trained CNN.
@@ -643,7 +643,7 @@ test_Xception = bottleneck_features['test']
 # 
 # __答案：__通过迁移学习，将Xception features的最后一层卷积层作为输入，添加应用平均池化卷积层，最后全联接层使用softmax做输出层。Xception学习快速，通过20 epoc即可获得相对VGG-16更高的准确率。
 
-# In[53]:
+# In[12]:
 
 
 ### TODO: Define your architecture.
@@ -660,7 +660,7 @@ Xception_model.summary()
 
 # ### （代码实现） 编译该模型
 
-# In[54]:
+# In[13]:
 
 
 ### TODO: Compile the model.
@@ -692,7 +692,7 @@ display_chart_from_model(history)
 
 # ### （代码实现）加载验证损失最低的模型
 
-# In[59]:
+# In[14]:
 
 
 ### TODO: Load the model weights with the best validation loss.
@@ -703,7 +703,7 @@ Xception_model.load_weights('saved_models/weights.best.Xception.hdf5')
 # 
 # 在小狗图像测试数据集上尝试模型。确保测试准确率高于 60%。
 
-# In[60]:
+# In[15]:
 
 
 ### TODO: Calculate classification accuracy on the test dataset.
@@ -725,7 +725,7 @@ print('Test accuracy: %.4f%%' % test_accuracy)
 
 # 其中上面的 `{network}` 模型名应该是 `VGG19`、`Resnet50`、`InceptionV3` 和 `Xception` 其中之一。
 
-# In[61]:
+# In[17]:
 
 
 ### TODO: Write a function that takes a path to an image as input
@@ -754,15 +754,19 @@ def Xception_predict_breed(img_path):
 # 这张图片看起来像     阿富汗猎犬（Afghan Hound）。
 # ### （代码实现）编写算法
 
-# In[62]:
+# In[21]:
 
 
 ### TODO: Write your algorithm.
 ### Feel free to use as many code cells as needed.
 def predict_dog(img_path):
+    img = cv2.imread(img_path)
+    plt.imshow(img)
+    plt.show()
     if dog_detector(img_path):
         print('Dog found. It looks like： ')
         print(Xception_predict_breed(img_path))
+        # display the image, along with bounding box
     elif face_detector(img_path):
         print('Human found. It looks like： ')
         print(Xception_predict_breed(img_path))
@@ -784,7 +788,7 @@ def predict_dog(img_path):
 # 
 # __答案：__ 测试结果符合预期。算法改进的建议，1）尝试一些新的人脸识别算法，比如Haar级联检测；2）对于照片中同时出现多个dog或者human,考虑目标识别算法RCNN等；3）通过增加数据量或者采用交叉验证对实验数据做不同的处理提高模型准确率
 
-# In[65]:
+# In[30]:
 
 
 ## TODO: Execute your algorithm from Step 6 on
@@ -798,6 +802,9 @@ predict_dog(human_files[5000])
 predict_dog(train_files[100])
 predict_dog(train_files[1000])
 predict_dog(train_files[5000])
+
+predict_dog('images/American_water_spaniel_00648.jpg')
+predict_dog('images/Brittany_02625.jpg')
 
 
 # In[ ]:
