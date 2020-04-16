@@ -1,0 +1,7 @@
+pandas==0.25.3
+scikit-learn==0.21.3
+numpy==1.17.3
+plotly==4.2.1
+keras==2.3.0
+matplotlib=3.2.1
+cv2==4.2.0
