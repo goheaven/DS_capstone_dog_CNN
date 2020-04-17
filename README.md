@@ -19,9 +19,9 @@
 - 导入数据集
 - 检测人脸
 - 检测小狗
-- (从头开始）创建分类小狗品种的 CNN
--（使用迁移学习）使用分类小狗品种的 CNN
--（使用迁移学习）创建分类小狗品种的 CNN
+- 从头开始创建分类小狗品种的 CNN
+- 使用迁移学习分类小狗品种的 CNN
+- 使用迁移学习创建分类小狗品种的 CNN
 - 编写算法
 - 测试算法
 
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 ```
 
 ## 5. 其他指示 <a name="Instructions"></a>
-1. 关于项目的blog文章地址：
+1. 关于项目的blog文章地址：https://blog.csdn.net/cfy_goheaven/article/details/105571997
 
 2. 项目通过dog_app-zh.ipynb展示或者dog_app-zh.html展示最终结果
 
