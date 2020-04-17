@@ -60,7 +60,7 @@ pip install -r requirements.txt
 ```
 
 ## 5. 其他指示 <a name="Instructions"></a>
-1. 关于项目的blog文章地址：
+1. 关于项目的blog文章地址：https://blog.csdn.net/cfy_goheaven/article/details/105571997
 
 2. 项目通过dog_app-zh.ipynb展示或者dog_app-zh.html展示最终结果
 
